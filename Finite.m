@@ -1,8 +1,12 @@
-%#!/usr/local/bin/octave -qf
+%%This code is used to simulate a one-dimensional chain of atoms having opposite charges and the masses
+%%of sodium and chlorine. It utilizes a damped Verlet algorithm. The code can be customized for different numbers of atoms, and outputs the position of the atoms and
+%%then the equilibrium separations of the atoms
+
+
 clear;
 fid=fopen('C:\Users\Patrick\Dropbox\Thesis\Code\100atom.dat','w')
-n=2e5;
-at=100;
+n=2e5;%Number of iterations
+at=100;%Number of atoms
 x=zeros(n,at);
 v=zeros(n,at);
 a=zeros(n,at);
@@ -11,35 +15,35 @@ m=zeros(1,at);
 
 
 for ma=2:2:at;
-     m(ma)=5.81e-26;
+     m(ma)=5.81e-26;%Mass of even atoms
 end
 for ma=1:2:at-1;
-    m(ma)=3.818e-26;
+    m(ma)=3.818e-26;%Mass of odd atoms
 end
 
 for ab=1:at;
-      x(1,ab)=(ab-1)*3.0437e-10;
+      x(1,ab)=(ab-1)*3.0437e-10;%Setting initial positions of the atoms
       x(2,ab)=(ab-1)*3.0437e-10;
 end
 
-dt=1e-16;
+dt=1e-16;%Time step
 qe=1.603e-19;
 q=zeros(1,at);
 
 
 
 for la=1:at;
-    q(la)=((-1)^la)*qe;
+    q(la)=((-1)^la)*qe;%Setting charges of the atoms
 end
     
-con=1/(4*(3.14159)*8.854e-12);
-l=1.05e-15;
-p=3.21e-11;
+con=1/(4*(3.14159)*8.854e-12);%1/4pi*epsilon_0
+l=1.05e-15;%Range of the nearest neighbour repulsion
+p=3.21e-11;%Strength of the nearest neighbour repulsion
 lp=l/p;
-gam=1e12;
+gam=1e12;%Damping coefficient
 atot=0;
 
-
+%For each iteration, calculate the acceleration on an atom due to every other atom. Then calculate, the position of the atom in the next iteration.
 
    for k=2:n-1;
       
